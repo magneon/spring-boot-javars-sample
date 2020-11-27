@@ -2,6 +2,7 @@ package br.com.softcube.javers.controllers;
 
 import br.com.softcube.javers.domains.EProduct;
 import br.com.softcube.javers.mappers.ProductMapper;
+import br.com.softcube.javers.models.dto.audit.DAudit;
 import br.com.softcube.javers.models.dto.common.DResponse;
 import br.com.softcube.javers.models.dto.product.DProduct;
 import br.com.softcube.javers.services.ProductService;
@@ -42,7 +43,7 @@ public class ProductController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateProduct(@RequestBody DProduct dProduct) {
+    public ResponseEntity<DResponse<DProduct>> updateProduct(@RequestBody DProduct dProduct) {
         EProduct product = productService.update(productMapper.fromDProductToEProduct(dProduct));
         if (product == null) {
             return null;
@@ -51,10 +52,29 @@ public class ProductController {
         return ResponseEntity.ok(DResponse.ok(productMapper.fromEProductToDProduct(product)));
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") Long id) {
+        productService.delete(id);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DResponse<DProduct>> createProduct(@RequestBody DProduct dProduct) {
+        EProduct eProduct = productService.createProduct(productMapper.fromDProductToEProduct(dProduct));
+        if (eProduct == null) {
+
+        }
+
+        return ResponseEntity.ok(DResponse.ok(productMapper.fromEProductToDProduct(eProduct)));
+    }
+
+    @GetMapping(value = "/audit", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DResponse<List<DAudit>>> audit() {
+        return ResponseEntity.ok(DResponse.ok(productService.getUpdatesAtProduct()));
+    }
+
     @GetMapping(value = "/audit/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity audit(@PathVariable("id") Long id) {
-        productService.getUpdatesAtProductById(id);
-        return null;
+    public ResponseEntity<DResponse<List<DAudit>>> audit(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(DResponse.ok(productService.getUpdatesAtProductById(id)));
     }
 
 }
