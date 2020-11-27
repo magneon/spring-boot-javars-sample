@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="1.0" author="Rafael Moura">
+        <sqlFile path="db/migration/v1.0_create_table_product.sql" encoding="UTF-8"/>
+    </changeSet>
+    <changeSet id="1.1" author="Rafael Moura">
+        <sqlFile path="db/migration/v1.1_create_table_price.sql" encoding="UTF-8"/>
+    </changeSet>
+    <changeSet id="1.2" author="Rafael Moura">
+        <sqlFile path="db/migration/v1.2_initial_load.sql" encoding="UTF-8"/>
+    </changeSet>
+</databaseChangeLog>
