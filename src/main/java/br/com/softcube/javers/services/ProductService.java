@@ -58,13 +58,13 @@ public class ProductService {
     }
 
     public List<DAudit> getUpdatesAtProductById(Long id) {
-        Changes changes = javers.findChanges(QueryBuilder.byInstanceId(id, EProduct.class).build());
+        Changes changes = javers.findChanges(QueryBuilder.byInstanceId(id, EProduct.class).withNewObjectChanges(true).build());
 
         return groupAllChanges(changes);
     }
 
     public List<DAudit> getUpdatesAtProduct() {
-        Changes changes = javers.findChanges(QueryBuilder.byClass(EProduct.class).build());
+        Changes changes = javers.findChanges(QueryBuilder.byClass(EProduct.class).withNewObjectChanges(true).build());
 
         return groupAllChanges(changes);
     }
@@ -102,9 +102,9 @@ public class ProductService {
             builder
                     .objectId((Long) valueChange.getAffectedLocalId())
                     .what(valueChange.getPropertyName())
-                    .from(valueChange.getLeft().toString())
-                    .to(valueChange.getRight().toString())
-                    .type(ChangeType.CHANGE.name());
+                    .from(valueChange.getLeft() == null ? "" : valueChange.getLeft().toString())
+                    .to(valueChange.getRight() == null ? "" : valueChange.getRight().toString())
+                    .type(ChangeType.UPDATE.name());
 
         } else if (change instanceof ObjectRemoved) {
             ObjectRemoved objectRemoved = (ObjectRemoved) change;
@@ -117,7 +117,7 @@ public class ProductService {
                         .objectId((Long) objectRemoved.getAffectedLocalId())
                         .who(metadata.getAuthor())
                         .when(metadata.getCommitDate())
-                        .type(ChangeType.REMOVE.name());
+                        .type(ChangeType.DELETE.name());
             }
 
         } else {
@@ -131,7 +131,7 @@ public class ProductService {
                         .objectId((Long) newObject.getAffectedLocalId())
                         .who(metadata.getAuthor())
                         .when(metadata.getCommitDate())
-                        .type(ChangeType.INCLUDE.name());
+                        .type(ChangeType.INSERT.name());
             }
         }
 
@@ -139,8 +139,8 @@ public class ProductService {
     }
 
     private enum ChangeType {
-        CHANGE,
-        REMOVE,
-        INCLUDE;
+        UPDATE,
+        DELETE,
+        INSERT;
     }
 }
