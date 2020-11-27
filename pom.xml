@@ -19,6 +19,7 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.0-M5</spring-cloud.version>
 		<mapstruct.version>1.4.1.Final</mapstruct.version>
+		<javers.version>5.14.0</javers.version>
 	</properties>
 
 	<dependencies>
@@ -68,6 +69,11 @@
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.javers</groupId>
+			<artifactId>javers-spring-boot-starter-sql</artifactId>
+			<version>${javers.version}</version>
 		</dependency>
 	</dependencies>
 

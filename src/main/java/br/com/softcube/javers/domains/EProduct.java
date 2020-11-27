@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "product")
 public class EProduct {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "name", length = 200, nullable = false)
     private String name;
     @Column(name = "description", length = 200)

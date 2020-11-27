@@ -11,4 +11,6 @@ public interface ProductMapper {
     List<DProduct> fromEProductListToDProductList(List<EProduct> products);
 
     DProduct fromEProductToDProduct(EProduct product);
+
+    EProduct fromDProductToEProduct(DProduct product);
 }
